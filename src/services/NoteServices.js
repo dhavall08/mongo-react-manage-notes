@@ -9,3 +9,7 @@ export const addNote = (data) => {
 export const getNotes = () => {
   return Axios.get(`${baseUrl}/api/notes`);
 }
+
+export const deleteNote = (data) => {
+  return Axios.delete(`${baseUrl}/api/delete-note`, { data });
+}

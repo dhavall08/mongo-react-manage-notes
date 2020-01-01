@@ -56,13 +56,14 @@
   background-color: rgb(244, 221, 255);
 }
 
-.note-list li span {
-  cursor: pointer;
+.note-list li button {
   margin-left: 15px;
   color: #9a61b5;
+  background: none;
+  border: 0;
 }
 
-.note-list li span:hover, .note-list li span:focus {
+.note-list li button:hover, .note-list li button:focus {
   color: #8943aa;
 }
 

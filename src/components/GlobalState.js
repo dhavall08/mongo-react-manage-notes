@@ -1,19 +1,15 @@
 import React, { Component } from 'react';
-import { addNote, getNotes } from '../services/NoteServices';
+import { addNote, getNotes, deleteNote } from '../services/NoteServices';
 
 const initialState = {
-  noteList: [
-    { id: 1, value: 'This is initial note.' }
-  ],
+  noteList: [],
   addNote: () => { },
 }
 
 export const ReactContext = React.createContext(initialState);
 export default class GlobalState extends Component {
   state = {
-    noteList: [
-      { id: 1, value: 'This is initial note.' }
-    ],
+    noteList: [],
     fetching: false
   }
 
@@ -26,12 +22,14 @@ export default class GlobalState extends Component {
     getNotes().then(res => {
       if (res.error) {
         this.setState({ fetching: false });
-        return console.error(res.message);
+        return console.error(res.data.message);
       }
       const noteList = res.data && res.data.data ? res.data.data : [];
       this.setState({ noteList: noteList, fetching: false });
     }).catch(err => {
       console.log(err);
+      this.setState({ noteList: [], fetching: false });
+
     })
   }
 
@@ -45,24 +43,30 @@ export default class GlobalState extends Component {
     }
     addNote({ note: text }).then(res => {
       if (res.error) {
-        return console.error(res.message);
+        callback(false);
+        return console.error(res.data.message);
       }
-      console.log(res.message);
-      this.setState((state) => ({
-        noteList: state.noteList.concat({ id: this.getRandom(), value: text })
-      }), () => {
-        callback();
-        this.getNotes();
-      });
+      console.log(res.data.message);
+      this.getNotes();
+      callback();
     }).catch(err => {
-      console.log(err);
+      callback(false);
+      console.error(err);
     })
   }
 
-  removeNote = (id) => {
-    this.setState((state) => ({
-      noteList: state.noteList.filter((note, i) => note.id !== id)
-    }));
+  removeNote = (id, callback) => {
+    deleteNote({ id: id }).then(res => {
+      if (res.error) {
+        callback();
+        return console.error(res.data.message);
+      }
+      console.log(res.data.message);
+      this.getNotes();
+      callback();
+    }).catch(err => {
+      console.log(err);
+    });
   }
 
   render() {

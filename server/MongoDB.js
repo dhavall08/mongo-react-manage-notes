@@ -1,5 +1,4 @@
-const MongoClient = require('mongodb').MongoClient;
-
+const { MongoClient, ObjectId } = require('mongodb');
 const connectionUrl = 'mongodb://127.0.0.1:27017';
 const dbName = 'NoteApp';
 
@@ -17,5 +16,6 @@ const initMongo = (callback) => {
 }
 
 module.exports = {
-  initMongo
+  initMongo,
+  ObjectId
 }

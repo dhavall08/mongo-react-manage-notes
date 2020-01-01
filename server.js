@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors')
 const bodyParser = require('body-parser'); // middleware to parse body
-const { initMongo } = require('./server/MongoDB');
+const { initMongo, ObjectId } = require('./server/MongoDB');
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -56,6 +56,28 @@ app.get('/api/notes', (req, res) => {
     return res.send({
       error: false,
       message: 'Record has been fetched successfully.',
+      data: result
+    })
+  })
+});
+
+app.delete('/api/delete-note', (req, res) => {
+  if (!req.body.id) {
+    return res.send({
+      error: true,
+      message: 'Please select id.'
+    })
+  }
+  db.collection('Notes').deleteOne({ _id: new ObjectId(req.body.id) }, (err, result) => {
+    if (err) {
+      return res.send({
+        error: true,
+        message: err
+      })
+    }
+    return res.send({
+      error: false,
+      message: 'Record has been deleted successfully.',
       data: result
     })
   })
