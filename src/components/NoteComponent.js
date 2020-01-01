@@ -54,12 +54,13 @@ export default class NoteComponent extends Component {
               placeholder={`${fetching ? 'start typing... loading...' : 'start typing...'}`}
               onChange={(e) => this.setState({ inputText: e.target.value })}
             />
-            {addLoading || removeLoading && <div className="spinner">
+            {(addLoading || removeLoading) && <div className="spinner">
               <div className="bounce1"></div>
               <div className="bounce2"></div>
               <div className="bounce3"></div>
             </div>}
             <button
+              tabIndex={`${this.state.inputText === '' || addLoading ? -1 : 0}`}
               className={`${this.state.inputText === '' || addLoading ? 'disable' : ''}`}
               onClick={this.addNote}>+</button>
           </div>
