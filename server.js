@@ -22,7 +22,7 @@ var corsOptions = {
 }
 
 app.use(cors(corsOptions));
-app.use(bodyParser.json());
+app.use(bodyParser.json()); // can set limit; default to 100kb
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Initialize connection once
